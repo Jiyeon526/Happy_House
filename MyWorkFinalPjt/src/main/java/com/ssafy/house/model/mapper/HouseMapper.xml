@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.house.model.mapper.HouseMapper">
+
+<select id="selectList" resultType="HouseDto">
+	select no, AptName, dong , buildYear, area, floor, dealAmount from HouseDeal
+	limit #{startRow},#{count}
+</select>
+
+<select id="selectCount" resultType="int">
+		SELECT COUNT(*) FROM HOUSEDEAL
+</select>
+
+<select id="searchList" resultType="HouseDto">
+	select no, AptName, dong , buildYear, area, floor, dealAmount from HouseDeal
+	<if test="opt != null and opt != ''">
+			<if test="opt == 'AptName'">
+				where ${opt} like concat('%', #{val}, '%')
+			</if>
+			<if test="opt != 'AptName'">
+				where ${opt} = #{val}
+			</if>
+		</if>
+	limit #{startRow},#{count}
+</select>
+
+<select id="searchCount" resultType="int">
+		SELECT COUNT(*) FROM HOUSEDEAL where ${opt} = #{val}
+</select>
+
+<select id="selectOne" resultType="HouseDto">
+		select distinct AptName, city, gugun, housedeal.dong, buildYear, area, floor, jibun, dealAmount from HOUSEDEAL join baseaddress on housedeal.code = baseaddress.dongcode
+		where housedeal.no = #{no}
+</select>
+
+<select id="selectPlace" resultType="HouseInfoDto">
+		select lat, lng from HOUSEINFO
+		where AptName = #{AptName} and dong = #{dong}
+</select>
+
+<select id="comList" resultType="CommercialDto">
+	<![CDATA[
+		select cnum,cname,ctype,lat,lng from commercial where ABS(lat - #{lat}) + ABS(lng - #{lng}) < 0.01
+	]]>
+</select>
+
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.house.model.mapper.NoticeMapper">
+
+	<select id="all" resultType="NoticeDto">
+	select * from notice
+	</select>
+	
+	<insert id="write" parameterType="NoticeDto">
+	insert into notice(nno, ntitle, ncontent)
+	values(#{nno}, #{ntitle}, #{ncontent})
+	</insert>
+	
+	<select id="read" resultType="NoticeDto">
+	select * from notice
+	where nno = #{nno}
+	</select>
+	
+	<update id="update" parameterType="NoticeDto">
+	update notice set ntitle=#{ntitle}, ncontent=#{ncontent}
+	where nno = #{nno}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+	delete from notice
+	where nno = #{nno}
+	</delete>
+	
+	<update id="add" parameterType="int">
+	update notice set nview=#{views}
+	where nno=#{nno}
+	</update>
+</mapper>
